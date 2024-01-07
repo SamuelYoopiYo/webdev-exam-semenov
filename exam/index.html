@@ -105,37 +105,50 @@
   </div>
   
 
-<!-- Далее балванка для дальнейшего редактирования и работы с АПИ -->
+<!-- ... -->
 <div id="routes" class="container mt-5 text-center">
   <h2 class="text-center text-purple">Список пешеходных маршрутов</h2>
   <div class="row mt-4">
-    <div class="col-md-12">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Название</th>
-            <th>Описание</th>
-            <th>Основные объекты</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Сюда будет вставлено содержимое таблицы из JS -->
-        </tbody>
-      </table>
+      <div class="col-md-12">
+          <!-- Форма для поиска по названию -->
+          <form class="form-inline mb-3">
+              <div class="form-group mx-sm-3">
+                  <label for="searchInput" class="sr-only">Поиск по названию</label>
+                  <input type="text" class="form-control" id="searchInput" placeholder="Поиск по названию">
+              </div>
+              <button type="submit" class="btn btn-primary">Найти</button>
+          </form>
 
-      <!-- Пагинация -->
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center mt-4">
-          <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
-        </ul>
-      </nav>
-    </div>
+          <!-- Фильтр по объектам -->
+          <label for="mainObjectsFilter">Фильтр по объектам:</label>
+          <select id="mainObjectsFilter" class="form-control">
+              <option value="">Не выбрано</option>
+          </select>
+
+          <!-- Таблица для данных из API -->
+          <table class="table mt-4">
+              <thead>
+                  <tr>
+                      <th>Название</th>
+                      <th>Описание</th>
+                      <th>Основные объекты</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody id="tableBody">
+                  <!-- Сюда будет вставлено содержимое таблицы из JS -->
+              </tbody>
+          </table>
+      </div>
   </div>
 </div>
+<!-- ... -->
+
+
+
+
+
+
 
 
     <div id="guides" class="container mt-5 text-center text-purple">
