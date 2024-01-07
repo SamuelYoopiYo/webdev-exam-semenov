@@ -17,9 +17,9 @@
 }
 
 .border-purple {
-    border: 5px solid #a648a2; /* Фиолетовая граница */
-    border-radius: 10px; /* Скругление углов */
-    padding: 15px; /* Отступ внутри блока */
+    border: 5px solid #a648a2;
+    border-radius: 10px;
+    padding: 15px;
 }
 
 .link-olive:hover{
@@ -30,11 +30,25 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; /* Установить высоту блока равной высшему элементу */
-  }
+    height: 100%;
+}
 
- #dignities img {
+#dignities img {
   width: auto;
   height: auto;
-  max-height: 150px; /* Установите желаемую максимальную высоту изображения */
+  max-height: 150px;
 }
+
+.alert-custom {
+    color: #fff;
+    background-color: #3eb489;
+    border-color: #308d6b;
+}
+      
+.btn-expand {
+    border: none;
+    background: none;
+    padding: 0;
+    color: #a648a2;
+}
+

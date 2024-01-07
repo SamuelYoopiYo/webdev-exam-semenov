@@ -31,7 +31,7 @@
           </li>
         </ul>
       </div>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="navbar-brand" href="cabinet.html">Личный кабинет</a>
@@ -43,8 +43,8 @@
   
 
   <!-- Область для всплывающих уведомлений (alerts) -->
-  <div class="alert alert-primary" role="alert">
-    Всплывающее уведомление
+  <div class="alert-container">
+ 
   </div>
 
   <!-- Блок с изображением и описанием компании -->
@@ -107,73 +107,36 @@
 
 <!-- Далее балванка для дальнейшего редактирования и работы с АПИ -->
 <div id="routes" class="container mt-5 text-center">
-    <h2 class="text-center text-purple">Список пешеходных маршрутов</h2>
-  
+  <h2 class="text-center text-purple">Список пешеходных маршрутов</h2>
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Основные объекты</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Сюда будет вставлено содержимое таблицы из JS -->
+        </tbody>
+      </table>
 
-    <div class="row mt-4">
-      <div class="col-md-12">
-        <form class="d-flex">
-          <div class="form-group mr-2 flex-grow-1">
-            <input type="text" class="form-control" placeholder="Поиск по названию">
-          </div>
-          <div>
-            <button type="submit" class="btn btn-primary mr-2">Найти</button>
-          </div>
-          <div class="form-group">
-            <select class="form-control">
-              <option>Достопримечательность</option>
-
-            </select>
-          </div>
-        </form>
-      </div>
+      <!-- Пагинация -->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center mt-4">
+          <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
+        </ul>
+      </nav>
     </div>
-  
+  </div>
+</div>
 
-    <div class="row mt-4">
-      <div class="col-md-12">
-        <table class="table">
-          <tbody>
-            <tr>
-              <td>Название</td>
-              <td>Описание</td>
-              <td>Основные объекты</td>
-              <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-
-          </tbody>
-        </table>
-
-            <!-- Пагинация -->
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center mt-4">
-              <li class="page-item"><a class="page-link" href="#">Предыдущая</a></li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">Следующая</a></li>
-            </ul>
-        </nav>
-      </div>
-    </div>
 
     <div id="guides" class="container mt-5 text-center text-purple">
         <h2>Доступные гиды по маршруту</h2>
@@ -253,7 +216,7 @@
       
       
       
-
+  <script src="main.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
