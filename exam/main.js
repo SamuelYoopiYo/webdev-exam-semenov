@@ -1,149 +1,159 @@
-let data; // Глобальная переменная для хранения данных
+// ф-ция получения данных с АПИ
+async function getData() {
+    const response = await fetch('http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes?api_key=5800a3ce-3a7d-4c48-bccc-54d2a6e448e7');
+    const data = await response.json();
+    return data;
+}
 
-// Функция для показа уведомления
-function showNotification(message) {
-    let alertContainer = document.querySelector('.alert-container');
-    if (!alertContainer) {
-        alertContainer = document.createElement('div');
-        alertContainer.classList.add('alert-container');
-        document.body.appendChild(alertContainer);
+async function main() {
+
+    const recordsData = await getData();
+    let currentPage = 1;
+    let rows = 10;
+
+    
+    const mainObjectsFilter = document.querySelector('#mainObjectsFilter');
+
+    // Очистка фильтра перед заполнением
+    mainObjectsFilter.innerHTML = '<option value="">Не выбрано</option>';
+
+    // Создание списка уникальных объектов
+    const mainObjectsSet = new Set();
+    recordsData.forEach(route => {
+        const objects = route.mainObject.split('-');
+        objects.forEach(object => mainObjectsSet.add(object));
+    });
+
+    // Добавление объектов в фильтр
+    mainObjectsSet.forEach(object => {
+        const option = document.createElement('option');
+        option.value = object.toLowerCase();
+        option.textContent = object;
+        mainObjectsFilter.appendChild(option);
+    });
+    
+
+    function displayList(arrData, rowsPerPage, page) {
+        tableBody = document.querySelector('.tableBody');
+        tableBody.innerHTML = "";
+        page--; 
+
+        const start = rowsPerPage * page;
+        const end = start + rowsPerPage;
+        const paginatedData = arrData.slice(start, end);
+
+        paginatedData.forEach(element => {
+            const recordEl = tableBody.insertRow();
+
+            const nameCell = recordEl.insertCell(0);
+            const descriptionCell = recordEl.insertCell(1);
+            const mainObjectsCell = recordEl.insertCell(2);
+            const selectCell = recordEl.insertCell(3);
+
+            nameCell.textContent = element.name;
+            descriptionCell.textContent = element.description;
+            mainObjectsCell.textContent = element.mainObject.split(' - ').join('; ');
+        });
     }
 
-    const newAlert = document.createElement('div');
-    newAlert.classList.add('alert', 'alert-custom');
-    newAlert.textContent = message;
+    function displayPaginationBtn(page) {
+        const liEl = document.createElement("li");
+        liEl.classList.add("page-item");
+        const aEl = document.createElement("a");
+        aEl.classList.add("page-link");
+        aEl.innerText = page;
 
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('close');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('data-dismiss', 'alert');
-    closeButton.setAttribute('aria-label', 'Close');
-    closeButton.innerHTML = '<span aria-hidden="true">&times;</span>';
-
-    newAlert.appendChild(closeButton);
-    alertContainer.appendChild(newAlert);
-}
-
-// Функция для обновления таблицы поиска и фильтра по объектам
-function updateTable() {
-    const mainObjectsFilter = document.querySelector('#mainObjectsFilter').value.toLowerCase();
-    const searchValue = document.querySelector('#searchInput').value.trim().toLowerCase();
-
-    data.forEach(route => {
-        const row = document.querySelector(`#tableBody tr[data-id="${route.id}"]`);
-        const routeData = Object.values(route).join(' ').toLowerCase();
-
-        const nameCell = row.cells[0];
-        const descriptionCell = row.cells[1];
-        const mainObjectsCell = row.cells[2];
-
-        nameCell.innerHTML = highlightMatches(route.name, searchValue);
-        descriptionCell.innerHTML = highlightMatches(route.description, searchValue);
-        mainObjectsCell.innerHTML = highlightMatches(route.mainObject, searchValue);
-
-        const shouldDisplayByMainObject = mainObjectsFilter === '' || route.mainObject.toLowerCase().includes(mainObjectsFilter);
-        const shouldDisplayBySearch = searchValue === '' || routeData.includes(searchValue);
-
-        row.style.display = shouldDisplayByMainObject && shouldDisplayBySearch ? '' : 'none';
-    });
-}
-
-// Функция для подсветки совпадений
-function highlightMatches(text, searchTerm) {
-    if (!searchTerm) return text;
-
-    const regex = new RegExp(searchTerm, 'gi');
-    return text.replace(regex, match => `<span class="highlight">${match}</span>`);
-}
-
-// Добавление обработчика события для поля поиска
-const searchInput = document.querySelector('#searchInput');
-searchInput.addEventListener('input', updateTable);
-
-// Функция для создания кнопки "Выбрать" с уведомлением
-function createSelectButton() {
-    const button = document.createElement('button');
-    button.classList.add('btn', 'btn-primary');
-    button.textContent = 'Выбрать';
-    button.addEventListener('click', function () {
-        showNotification('Выбран маршрут');
-    });
-    return button;
-}
-
-// Функция для заполнения таблицы данными из API
-async function fillTableFromAPI() {
-    try {
-        const response = await fetch('http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes?api_key=5800a3ce-3a7d-4c48-bccc-54d2a6e448e7');
-        data = await response.json();
-
-        const tableBody = document.querySelector('#tableBody');
-        const mainObjectsFilter = document.querySelector('#mainObjectsFilter');
-
-        // Очистка таблицы перед заполнением новыми данными
-        tableBody.innerHTML = '';
-
-        // Очистка фильтра перед заполнением
-        mainObjectsFilter.innerHTML = '<option value="">Не выбрано</option>';
-
-        // Создание списка уникальных объектов
-        const objectsSet = new Set();
-        data.forEach(route => {
-            const objects = route.mainObject.split('-');
-            objects.forEach(object => objectsSet.add(object.trim()));
-        });
-
-        // Добавление объектов в фильтр
-        objectsSet.forEach(object => {
-            const option = document.createElement('option');
-            option.value = object.toLowerCase();
-            option.textContent = object;
-            mainObjectsFilter.appendChild(option);
-        });
-
-        // Заполнение таблицы данными из API
-        data.forEach(route => {
-            const row = tableBody.insertRow();
-            row.dataset.id = route.id;
-
-            const nameCell = row.insertCell(0);
-            const descriptionCell = row.insertCell(1);
-            const mainObjectsCell = row.insertCell(2);
-            const selectCell = row.insertCell(3);
-
-            nameCell.textContent = route.name;
-            descriptionCell.textContent = route.description;
-            mainObjectsCell.textContent = route.mainObject;
-
-            const selectButton = createSelectButton();
-            selectCell.appendChild(selectButton);
-        });
-
-        // Функция для обновления таблицы при выборе объекта в фильтре
-        function updateByMainObject() {
-            const selectedObject = mainObjectsFilter.value.toLowerCase();
-
-            data.forEach(route => {
-                const row = document.querySelector(`#tableBody tr[data-id="${route.id}"]`);
-                const shouldDisplay = selectedObject === '' || route.mainObject.toLowerCase().includes(selectedObject);
-
-                row.style.display = shouldDisplay ? '' : 'none';
-
-                const cells = Array.from(row.cells);
-                cells.forEach(cell => {
-                    if (cell.textContent.toLowerCase().includes(selectedObject)) {
-                        cell.innerHTML = highlightMatches(cell.textContent, selectedObject);
-                    }
-                });
-            });
+        if (currentPage == page) {
+            liEl.classList.add("active");
         }
 
-        // Добавление обработчика события для фильтра по объектам
-        mainObjectsFilter.addEventListener('change', updateByMainObject);
-    } catch (error) {
-        console.error('Ошибка при загрузке данных:', error);
+        aEl.addEventListener('click', () => {
+            currentPage = page;
+            displayList(recordsData, rows, currentPage);
+
+            let currentItemLi = document.querySelector('li.active');
+            currentItemLi.classList.remove('active');
+
+            liEl.classList.add("active");
+        });
+        liEl.appendChild(aEl);
+
+        return liEl;
     }
+
+    function displayPagination(arrData, rowsPerPage) {
+        const paginationEl = document.querySelector(".pagination");
+        paginationEl.innerHTML = '';
+        const pagesCount = Math.ceil(arrData.length / rowsPerPage);
+        const ulEl = document.createElement("ul");
+        ulEl.classList.add("pagination");
+
+        for (let i = 0; i < pagesCount; i++) {
+            const liEl = displayPaginationBtn(i + 1);
+            ulEl.appendChild(liEl); 
+        }
+        paginationEl.appendChild(ulEl);
+    }
+
+    // Добавление обработчика события для поля поиска
+    const form = document.querySelector("form");
+    const searchInput = document.querySelector('.form-control');
+
+    form.addEventListener('input', (e) => {
+        e.preventDefault();
+
+        let searchedData = [];
+        
+        recordsData.forEach(record => {
+            let toChek = record.name.toLowerCase();
+
+            if (toChek.includes(searchInput.value.toLowerCase())) {
+                searchedData.push(record);
+            }
+        });
+
+        displayList(searchedData, rows, currentPage);
+        displayPagination(searchedData, rows);
+    });
+
+    mainObjectsFilter.addEventListener('change', (e) => {
+        e.preventDefault();
+
+        filtredData = [];
+        
+        recordsData.forEach(record => {
+            let toChek = record.mainObject.toLowerCase();
+
+            if (toChek.includes(mainObjectsFilter.value.toLowerCase())) {
+                filtredData.push(record);
+            }
+        });
+
+        displayList(filtredData, rows, currentPage);
+        displayPagination(filtredData, rows);
+    });
+
+    // function getNeedData() {
+    //     let needData = [];
+
+    //     recordsData.forEach(record => {
+    //         let nameToChek = record.name.toLowerCase();
+    //         let objectToChek = record.mainObject.toLowerCase();
+
+    //         if (nameToChek.includes(searchInput.value.toLowerCase())) {
+    //             if (objectToChek.includes(mainObjectsFilter.value.toLowerCase())) {
+    //                 needData.push(record);
+    //             }
+    //         }
+    //     });
+
+
+    // }
+
+    
+    displayList(recordsData, rows, currentPage);
+    displayPagination(recordsData, rows);
+    getFilter(filtredData);
 }
 
-// Вызов функции для заполнения таблицы данных из API и создания фильтра
-fillTableFromAPI();
+main();
