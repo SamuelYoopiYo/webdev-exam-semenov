@@ -1,5 +1,5 @@
 // Функция для показа уведомления
-function showNotification(message) {
+function showNotification(message, type) {
     // Создаем контейнер для уведомлений, если он еще не создан
     let alertContainer = document.querySelector('.alert-container');
     if (!alertContainer) {
@@ -10,7 +10,7 @@ function showNotification(message) {
 
     // Создаем уведомление
     const newAlert = document.createElement('div');
-    newAlert.classList.add('alert', 'alert-mint', 'alert-dismissible', 'fade', 'show');
+    newAlert.classList.add('alert', type, 'alert-dismissible', 'fade', 'show');
     newAlert.textContent = message;
 
     const closeButton = document.createElement('button');
@@ -33,9 +33,14 @@ function createSelectButton() {
 
 // ф-ция получения данных с АПИ
 async function getData() {
-    const response = await fetch('http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes?api_key=5800a3ce-3a7d-4c48-bccc-54d2a6e448e7');
-    const data = await response.json();
-    return data;
+    try {
+        const response = await fetch('http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes?api_key=5800a3ce-3a7d-4c48-bccc-54d2a6e448e7');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        showNotification('Ошибка при загрузке данных', 'alert-danger');
+    }
+    
 }
 
 // Основная функция (с ней мне удобней работать, т.к. мэйню плюсы)
@@ -179,5 +184,7 @@ async function main() {
     displayPagination(recordsData, rows);
 
 }
-showNotification('Алерты работают'); // Просто показать функцианальность
+// Просто показать функцианальность
+showNotification('Алерты работают', 'alert-mint');
+
 main();
