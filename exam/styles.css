@@ -1,3 +1,5 @@
+/* Все свойства в этом докумете написаны исключительно из эстетических побуждений автора */
+
 .bg-purple{
     background-color: #a648a2;
 }
@@ -10,20 +12,10 @@
     border-radius: 5;
 }
 
-.col-md-4 img {
-    max-height: 300px;
-    width: auto; 
-    
-}
-
 .border-purple {
     border: 5px solid #a648a2;
     border-radius: 10px;
     padding: 15px;
-}
-
-.link-olive:hover{
-    color: #808000;
 }
 
 #dignities .border-purple {
@@ -39,25 +31,36 @@
   max-height: 150px;
 }
 
-.alert-custom {
+.alert-mint {
     color: #fff;
     background-color: #3eb489;
     border-color: #308d6b;
 }
-      
-.btn-expand {
-    border: none;
-    background: none;
-    padding: 0;
-    color: #a648a2;
-}
-
-.highlight {
-    background-color: yellow;
-    font-weight: bold;
-}
 
 body {
     margin-right: 0;
+}
+
+.btn-purple {
+    border: solid #fff;
+    background-color: #a648a2;
+    color: #fff;
+}
+
+.btn-purple:hover {
+    background: none;
+    border: solid #a648a2;
+    color: #a648a2;
+    position: static;
+}
+
+.form-control:focus {
+    border-color: #a648a2;
+    box-shadow: 0 0 0 0.2rem rgba(166, 72, 162, 0.4);
+}
+
+.form-select:focus {
+    border-color: #a648a2;
+    box-shadow: 0 0 0 0.2rem rgba(166, 72, 162, 0.4);
 }
 

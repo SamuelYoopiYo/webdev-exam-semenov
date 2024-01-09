@@ -1,3 +1,36 @@
+// Функция для показа уведомления
+function showNotification(message) {
+    // Создаем контейнер для уведомлений, если он еще не создан
+    let alertContainer = document.querySelector('.alert-container');
+    if (!alertContainer) {
+        alertContainer = document.createElement('div');
+        alertContainer.classList.add('alert-container');
+        document.body.appendChild(alertContainer);
+    }
+
+    // Создаем уведомление
+    const newAlert = document.createElement('div');
+    newAlert.classList.add('alert', 'alert-mint', 'alert-dismissible', 'fade', 'show');
+    newAlert.textContent = message;
+
+    const closeButton = document.createElement('button');
+    closeButton.classList.add('btn-close');
+    closeButton.setAttribute('type', 'button');
+    closeButton.setAttribute('data-bs-dismiss', 'alert');
+    closeButton.setAttribute('aria-label', 'Close');
+
+    newAlert.appendChild(closeButton);
+    alertContainer.appendChild(newAlert);
+}
+
+// Функция для создания кнопки "Выбрать" с уведомлением
+function createSelectButton() {
+    const button = document.createElement('button');
+    button.classList.add('btn', 'btn-purple');
+    button.textContent = 'Выбрать';
+    return button;
+}
+
 // ф-ция получения данных с АПИ
 async function getData() {
     const response = await fetch('http://exam-2023-1-api.std-900.ist.mospolytech.ru/api/routes?api_key=5800a3ce-3a7d-4c48-bccc-54d2a6e448e7');
@@ -5,6 +38,7 @@ async function getData() {
     return data;
 }
 
+// Основная функция (с ней мне удобней работать, т.к. мэйню плюсы)
 async function main() {
 
     const recordsData = await getData();
@@ -27,12 +61,13 @@ async function main() {
     // Добавление объектов в фильтр
     mainObjectsSet.forEach(object => {
         const option = document.createElement('option');
+        option.classList.add('option-custom');
         option.value = object.toLowerCase();
         option.textContent = object;
         mainObjectsFilter.appendChild(option);
     });
     
-
+    // Функция для постраничного отображения
     function displayList(arrData, rowsPerPage, page) {
         tableBody = document.querySelector('.tableBody');
         tableBody.innerHTML = "";
@@ -53,9 +88,13 @@ async function main() {
             nameCell.textContent = element.name;
             descriptionCell.textContent = element.description;
             mainObjectsCell.textContent = element.mainObject.split(' - ').join('; ');
+
+            const selectButton = createSelectButton();
+            selectCell.appendChild(selectButton);
         });
     }
 
+    // Функция для создания кнопок пагинации
     function displayPaginationBtn(page) {
         const liEl = document.createElement("li");
         liEl.classList.add("page-item");
@@ -81,6 +120,7 @@ async function main() {
         return liEl;
     }
 
+    // Функция для отображения пагинации
     function displayPagination(arrData, rowsPerPage) {
         const paginationEl = document.querySelector(".pagination");
         paginationEl.innerHTML = '';
@@ -99,6 +139,7 @@ async function main() {
     const form = document.querySelector("form");
     const searchInput = document.querySelector('.form-control');
 
+    // Для поиска
     form.addEventListener('input', (e) => {
         e.preventDefault();
 
@@ -116,6 +157,7 @@ async function main() {
         displayPagination(searchedData, rows);
     });
 
+    // Для фильтра
     mainObjectsFilter.addEventListener('change', (e) => {
         e.preventDefault();
 
@@ -132,28 +174,10 @@ async function main() {
         displayList(filtredData, rows, currentPage);
         displayPagination(filtredData, rows);
     });
-
-    // function getNeedData() {
-    //     let needData = [];
-
-    //     recordsData.forEach(record => {
-    //         let nameToChek = record.name.toLowerCase();
-    //         let objectToChek = record.mainObject.toLowerCase();
-
-    //         if (nameToChek.includes(searchInput.value.toLowerCase())) {
-    //             if (objectToChek.includes(mainObjectsFilter.value.toLowerCase())) {
-    //                 needData.push(record);
-    //             }
-    //         }
-    //     });
-
-
-    // }
-
     
     displayList(recordsData, rows, currentPage);
     displayPagination(recordsData, rows);
-    getFilter(filtredData);
-}
 
+}
+showNotification('Алерты работают'); // Просто показать функцианальность
 main();
