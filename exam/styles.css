@@ -1,14 +1,14 @@
 /* Все свойства в этом докумете написаны исключительно из эстетических побуждений автора */
 
-.bg-purple{
+.bg-purple {
     background-color: #a648a2;
 }
 
-.text-purple{
+.text-purple {
     color: #a648a2;
 }
 
-.container-img{
+.container-img {
     border-radius: 5;
 }
 
@@ -26,9 +26,9 @@
 }
 
 #dignities img {
-  width: auto;
-  height: auto;
-  max-height: 150px;
+    width: auto;
+    height: auto;
+    max-height: 150px;
 }
 
 .alert-mint {
@@ -63,4 +63,3 @@ body {
     border-color: #a648a2;
     box-shadow: 0 0 0 0.2rem rgba(166, 72, 162, 0.4);
 }
-

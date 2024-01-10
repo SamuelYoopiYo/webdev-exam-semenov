@@ -40,7 +40,7 @@ async function getData() {
     } catch (error) {
         showNotification('Ошибка при загрузке данных', 'alert-danger');
     }
-    
+
 }
 
 // Основная функция (с ней мне удобней работать, т.к. мэйню плюсы)
@@ -50,7 +50,7 @@ async function main() {
     let currentPage = 1;
     let rows = 10;
 
-    
+
     const mainObjectsFilter = document.querySelector('#mainObjectsFilter');
 
     // Очистка фильтра перед заполнением
@@ -71,12 +71,12 @@ async function main() {
         option.textContent = object;
         mainObjectsFilter.appendChild(option);
     });
-    
+
     // Функция для постраничного отображения
     function displayList(arrData, rowsPerPage, page) {
         tableBody = document.querySelector('.tableBody');
         tableBody.innerHTML = "";
-        page--; 
+        page--;
 
         const start = rowsPerPage * page;
         const end = start + rowsPerPage;
@@ -135,7 +135,7 @@ async function main() {
 
         for (let i = 0; i < pagesCount; i++) {
             const liEl = displayPaginationBtn(i + 1);
-            ulEl.appendChild(liEl); 
+            ulEl.appendChild(liEl);
         }
         paginationEl.appendChild(ulEl);
     }
@@ -149,7 +149,7 @@ async function main() {
         e.preventDefault();
 
         let searchedData = [];
-        
+
         recordsData.forEach(record => {
             let toChek = record.name.toLowerCase();
 
@@ -167,7 +167,7 @@ async function main() {
         e.preventDefault();
 
         filtredData = [];
-        
+
         recordsData.forEach(record => {
             let toChek = record.mainObject.toLowerCase();
 
@@ -179,7 +179,7 @@ async function main() {
         displayList(filtredData, rows, currentPage);
         displayPagination(filtredData, rows);
     });
-    
+
     displayList(recordsData, rows, currentPage);
     displayPagination(recordsData, rows);
 
